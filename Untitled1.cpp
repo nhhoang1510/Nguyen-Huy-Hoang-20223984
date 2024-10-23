@@ -1,40 +1,48 @@
 #include <iostream>
-using namespace std;
-void swap(int *a, int *b){
-	int temp = *a;
-	*a=*b;
-	*b=temp;
-}
-//Ma hoa cac mau bang cac so nguyen 0,1,2 de bieu dien lan luot mau do, trang va xanh
-void sort_colors(int arr[],int n){
-	int low = 0, mid = 0, high = n - 1;
-	while (mid <= high) {
-        if (arr[mid] == 0) {
-            swap(&arr[low], &arr[mid]);
-            low++;
-            mid++;
-        } else if (arr[mid] == 1) { 
-            mid++;
-        } else { 
-            swap(&arr[mid], &arr[high]);
-            high--;
+#include <fstream>
+int main (){
+	std::ofstream outfile ("population.data");
+	if(!outfile.is_open()){
+		std::cout << "Khong the mo file" << std::endl;
+		return 1;
+	}
+	int year, births;
+	int n=0;
+	std::cout << "Nhap nam va so nguoi sinh ra (nhap -1 de dung): " << std::endl;
+	while(true){
+		std::cin >> year;
+		if (year==-1){
+			break;
+		}
+		std::cin >> births;
+		outfile << year << "   " << births << std::endl;
+		n++;
+	}
+	
+	outfile.close();
+	std::ifstream infile("population.data");
+    if (!infile.is_open()) {
+        std::cout << "Khong the mo file" << std::endl;
+        return 1;
+    }
+    int minYear, maxYear;
+    int minBirths = INT_MAX; 
+    int maxBirths = INT_MIN; 
+
+    while (infile >> year >> births) {
+        if (births < minBirths) {
+            minBirths = births;
+            minYear = year; 
+        }
+        if (births > maxBirths) {
+            maxBirths = births;
+            maxYear = year; 
         }
     }
-}
-void print_array(int arr[], int n)
-{
-    for (int i = 0; i < n; i++)
-        cout << arr[i] << " ";
-}
+    infile.close(); 
 
-int main()
-{
-    int arr[] = { 2, 0, 2, 0, 0, 1, 0, 0, 2, 1 };
-    int n = sizeof(arr) / sizeof(arr[0]);
-
-    sort_colors(arr, n);
-
-    print_array(arr, n);
+    std::cout << "Nam co so nguoi sinh ra lon nhat: " << maxYear << std::endl;
+    std::cout << "Nam co so nguoi sinh ra nho nhat: " << minYear << std::endl;
 
     return 0;
 }
